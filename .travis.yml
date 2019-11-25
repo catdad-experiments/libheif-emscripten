@@ -20,7 +20,6 @@ before_script:
   - sleep 2
   - docker ps -a
   - $RUN cat /etc/os-release
-  - $RUN lsb_release -a
 
 script:
   - $RUN ./build-emscripten.sh
