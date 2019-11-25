@@ -17,7 +17,7 @@ before_script:
   - docker pull $IMAGE
   - docker images
   - docker run -dit --name $NAME -v $(pwd)/libheif:/src -w /src $IMAGE bash
-  - sleep 2000
+  - sleep 2
   - docker ps -a
   - $RUN cat /etc/os-release
   - $RUN lsb_release -a
