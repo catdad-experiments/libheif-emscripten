@@ -9,7 +9,7 @@ env:
   global:
     - IMAGE=trzeci/emscripten:sdk-incoming-64bit
     - NAME=emscipten
-    - RUN=docker exec -it emscipten
+    - RUN="docker exec -it emscipten"
 
 install: skip
 
