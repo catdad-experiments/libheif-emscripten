@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - node
+
+sudo: required
+
+services:
+  - docker
+  
+env:
+  - IMAGE=trzeci/emscripten:sdk-incoming-64bit
+
+script:
+  - docker run -v $(pwd)/libheif:/src -w /src $IMAGE ./build-emscripten.sh
+  - ls libheif
