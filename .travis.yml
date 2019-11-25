@@ -1,25 +1,25 @@
+os: linux
 language: node_js
 node_js: '12'
 
-jobs:
-  include:
-    - name: build
-      os: linux
-      services:
-        - docker
-      install: skip
-      env:
-        - IMAGE=trzeci/emscripten:sdk-incoming-64bit
-        - NAME=emscipten
-        - RUN=docker exec -it emscipten
+services:
+  - docker
+  
+env:
+  global:
+    - IMAGE=trzeci/emscripten:sdk-incoming-64bit
+    - NAME=emscipten
+    - RUN=docker exec -it emscipten
 
-      before_script:
-        - docker pull $IMAGE
-        - docker images
-        - docker run -d --name $NAME -v $(pwd)/libheif:/src -w /src $IMAGE bash
-        - $RUN cat /etc/os-release
-        - $RUN lsb_release -a
-      script:
-        - $RUN ./build-emscripten.sh
-      after_success:
-        - ls libheif
+install: skip
+
+before_script:
+  - docker pull $IMAGE
+  - docker images
+  - docker run -d --name $NAME -v $(pwd)/libheif:/src -w /src $IMAGE bash
+  - $RUN cat /etc/os-release
+  - $RUN lsb_release -a
+
+script:
+  - $RUN ./build-emscripten.sh
+  - ls libheif
