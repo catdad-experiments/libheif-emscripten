@@ -1,15 +1,22 @@
+os: linux
 language: node_js
-node_js:
-  - node
-
-sudo: required
+node_js: '12'
 
 services:
   - docker
   
 env:
   - IMAGE=trzeci/emscripten:sdk-incoming-64bit
+  - NAME=emscipten
+  - RUN=docker exec -it emscipten
+
+before_install:
+  - docker pull $IMAGE
+  - docker images
+  - docker run -d --name $NAME -v $(pwd)/libheif:/src -w /src $IMAGE bash
+  - $RUN cat /etc/os-release
+  - $RUN lsb_release -a
 
 script:
-  - docker run -v $(pwd)/libheif:/src -w /src $IMAGE ./build-emscripten.sh
+  - $RUN ./build-emscripten.sh
   - ls libheif
