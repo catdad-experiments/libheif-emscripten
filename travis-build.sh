@@ -2,7 +2,7 @@
 set -e
 
 # this path is used by the scripts, and everything is executed
-# relative to this path, so set it to the submodule root 
+# relative to this path, so set it to the submodule root
 export REAL_TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
 export TRAVIS_BUILD_DIR=$REAL_TRAVIS_BUILD_DIR/libheif
 
