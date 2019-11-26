@@ -1,26 +1,30 @@
+language: cpp
+compiler: gcc
 os: linux
-language: node_js
-node_js: '12'
-
-services:
-  - docker
   
 env:
   global:
-    - IMAGE=trzeci/emscripten
-    - NAME=emscipten
-    - RUN="docker exec -it emscipten"
+    - EMSCRIPTEN_VERSION=1.37.26
 
 install: skip
 
+before_install:
+  - cd $TRAVIS_BUILD_DIR
+  - cd libheif
+  - ./scripts/install-ci-linux.sh
+
 before_script:
-  - docker pull $IMAGE
-  - docker images
-  - docker run -dit --name $NAME -v $(pwd)/libheif:/src -w /src $IMAGE bash
-  - sleep 2
-  - docker ps -a
-  - $RUN cat /etc/os-release
+  - cd $TRAVIS_BUILD_DIR
+  - cd libheif
+  - ./scripts/prepare-ci.sh
 
 script:
-  - $RUN ./build-emscripten.sh
-  - ls libheif
+  - cd $TRAVIS_BUILD_DIR
+  - cd libheif
+  - ./scripts/run-ci.sh
+
+script:
+  - cd $TRAVIS_BUILD_DIR
+  - cd libheif
+  - ./build-emscripten.sh
+  - ls -la
