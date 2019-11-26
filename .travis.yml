@@ -5,8 +5,10 @@ dist: trusty
 addons:
   apt:
     update: true
-  
+
 script:
   - ./travis-build.sh
   - cd $TRAVIS_BUILD_DIR
   - ls -la libheif
+  - ./travis-dist.sj
+  - ls -la dist
