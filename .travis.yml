@@ -1,6 +1,11 @@
 language: cpp
 compiler: gcc
 os: linux
+
+dist: trusty
+addons:
+  apt:
+    update: true
   
 env:
   global:
