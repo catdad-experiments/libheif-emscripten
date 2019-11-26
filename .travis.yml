@@ -7,7 +7,7 @@ services:
   
 env:
   global:
-    - IMAGE=trzeci/emscripten:sdk-incoming-64bit
+    - IMAGE=trzeci/emscripten
     - NAME=emscipten
     - RUN="docker exec -it emscipten"
 
