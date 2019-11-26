@@ -10,17 +10,20 @@ env:
     - IMAGE=trzeci/emscripten
     - NAME=emscipten
     - RUN="docker exec -it emscipten"
+    - EMSCRIPTEN_VERSION=1.37.26
 
 install: skip
 
 before_script:
   - docker pull $IMAGE
   - docker images
-  - docker run -dit --name $NAME -v $(pwd)/libheif:/src -w /src $IMAGE bash
+  - docker run -dit --name $NAME -e EMSCRIPTEN_VERSION -v $(pwd)/libheif:/src -w /src $IMAGE bash
   - sleep 2
   - docker ps -a
   - $RUN cat /etc/os-release
 
 script:
-  - $RUN ./build-emscripten.sh
+  - $RUN ./scripts/install-ci-linux.sh
+  - $RUN ./scripts/prepare-ci.sh
+  - $RUN ./scripts/run-ci.sh
   - ls libheif
