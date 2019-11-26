@@ -10,8 +10,6 @@ env:
   global:
     - EMSCRIPTEN_VERSION=1.37.26
 
-install: skip
-
 before_install:
   - cd $TRAVIS_BUILD_DIR
   - cd libheif
