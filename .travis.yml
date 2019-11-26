@@ -10,7 +10,7 @@ script:
   - ./travis-build.sh
   - cd $TRAVIS_BUILD_DIR
   - ls -la libheif
-  - ./travis-dist.sj
+  - ./travis-dist.sh
   - ls -la dist
 
 deploy:
