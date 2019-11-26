@@ -12,3 +12,15 @@ script:
   - ls -la libheif
   - ./travis-dist.sj
   - ls -la dist
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: OACiKOB81dT7mj6FcUiKnw2Z9jE6YZKv64/mCD8xgscjdcptwIyqiMLKRVg+xsgznkBV26fQ+IzLSiZfPDWSw5pOBSRur0o9O2/QPswsYiIHhdj0l8C5NHYVC8OzF9tlh2HvOW4fKs0dphrQMPld2qLxtur1JooAWCf/L0tIBq8Dp63hek1csK5tvCCLlwckngDpNPmhAH0hqvoxBOf0VT1pMFFrZv1KA9u01DnrIhuktabezXqGeaWX3Pfnc5Su2tMUAVz8wMc/OeWrsIjHNAYKLlNYxHu3mOKe7UDV+CLmIy2AKSNWmkbzpijMWAfe+3KLdv3loccOJE0hzS2ey7te4D/uPu0XkCwm+dLZzxn1Tci80+flG5O0PnCtQTTjAROXyd/C+ChrAD9xz9Eoe7CJAitTEZr6938axprJKoNp9KJB30gxCe9dH3yAhQgLenI3SqLoNe/JAveet9bxu3LYva46cNI5qISDoE9tYggJnj/vSnBfxm7dR8h09+dnHuBPMhKlrmxDOMJtPxvJ4Y2DX/4ZaS/jRtK77HZ0uom/tdHUePCHTsW8JOX1X8Gm1TuPkpJl3+O3Err9ZQ0bgVOhOMGwe+yd+7+viMts2xTPrqw0GmiZe3UW1xWkaH0Q17RBpttK90eShXLmjMTNMEup0UfyjL0lBO+hygBnBJs=
+  file_glob: true
+  file: 'dist/*'
+  on:
+    repo: catdad-experiments/libheif-emscripten
+    branch: '*'
+    tags: true
