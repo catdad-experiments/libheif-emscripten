@@ -6,22 +6,7 @@ addons:
   apt:
     update: true
   
-env:
-  global:
-    - EMSCRIPTEN_VERSION=1.37.26
-
-before_install:
-  - export REAL_TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR
-  - export TRAVIS_BUILD_DIR=$REAL_TRAVIS_BUILD_DIR/libheif
-  - cd $TRAVIS_BUILD_DIR
-  - echo "pwd = $(pwd)"
-  - ./scripts/install-ci-linux.sh
-
-before_script:
-  - echo "pwd = $(pwd)"
-  - ./scripts/prepare-ci.sh
-
 script:
-  - echo "pwd = $(pwd)"
-  - ./scripts/run-ci.sh
-  - ls -la
+  - ./travis-build.sh
+  - cd $TRAVIS_BUILD_DIR
+  - ls -la libheif
