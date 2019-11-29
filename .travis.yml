@@ -37,3 +37,7 @@ jobs:
         - cd $TRAVIS_BUILD_DIR
         - ls -la libheif
         - ls -la libheif/examples
+      after_success:
+        - curl --upload-file ./libheif/examples/heif-convert
+        - curl --upload-file ./libheif/examples/heif-enc
+        - curl --upload-file ./libheif/examples/heif-thumbnailer
