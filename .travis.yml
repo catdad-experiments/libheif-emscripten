@@ -1,26 +1,39 @@
 language: cpp
 compiler: gcc
-os: linux
-dist: trusty
-addons:
-  apt:
-    update: true
 
-script:
-  - ./travis-build.sh
-  - cd $TRAVIS_BUILD_DIR
-  - ls -la libheif
-  - ./travis-dist.sh
-  - ls -la dist
-
-deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key:
-    secure: i/8M0Ct6w3IbSdWHeFdHKIRkAvQfHOSSbMwc72duRBFJRPvxeGhtNdXs/HLHRpW6v5OxzWogQ19SYYRN1L4kwfdBdbRigBzKqRYafk8r0TCV8v5m8LEQ84DXPsGL6OBIHbdoxusdcMVx3HqnNTaUnOZlWV+rkcsfnk12U7MY6rQEs7h22bF4G0U3RqA2RqeQ+vDGIXKt/M1J4b988OGgohVfORoJIDlW+hrd/pdhdyJaIzEpyfCGLk8iCbA97komArtTtiWf1N2djfhNAWdRSdKTl7AgE7GSlt7Tl8I0onQzddZSJwjaKLMDKtftjyMSsbpihWf79mZM1I7S+x+Jd8YWcXwawdXezbE9KvPQXAloxCAjS6/SEpddsrqEQx4d3ZjziabHn1+/p6+EJ1D4zjcj93uaECpFZAI2iQ4+xe/Wt7Bg+j+a7lOzLwfqEbfwnqXn9NoYjz6GKyewje153ePCa68Q85/NrvZ3BrGmVDXpxkz5CakxhOP0MF3SQVwgKOi6ljTGpNIeDDnpJggo/w7AK46GbUaAEuafk+w1AYYSub2sy2qLIxNafrhH/LbsbNB7Wc6ltsZDLjEiKRpOttJRKxsWSBPR7foNM3UmrgU1BSvFxbZ5L76o25Ft8bvRV1o72qS9ulZaCdgxGB2MMve8tJZ1XeUdTexSygpyxNU=
-  file_glob: true
-  file: 'dist/*'
-  on:
-    repo: catdad-experiments/libheif-emscripten
-    branch: '*'
-    tags: true
+jobs:
+  include:
+    - name: emscripten
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          update: true
+      script:
+        - ./travis-build.sh
+        - cd $TRAVIS_BUILD_DIR
+        - ls -la libheif
+        - ./travis-dist.sh
+        - ls -la dist
+      deploy:
+        provider: releases
+        skip_cleanup: true
+        api_key:
+          secure: i/8M0Ct6w3IbSdWHeFdHKIRkAvQfHOSSbMwc72duRBFJRPvxeGhtNdXs/HLHRpW6v5OxzWogQ19SYYRN1L4kwfdBdbRigBzKqRYafk8r0TCV8v5m8LEQ84DXPsGL6OBIHbdoxusdcMVx3HqnNTaUnOZlWV+rkcsfnk12U7MY6rQEs7h22bF4G0U3RqA2RqeQ+vDGIXKt/M1J4b988OGgohVfORoJIDlW+hrd/pdhdyJaIzEpyfCGLk8iCbA97komArtTtiWf1N2djfhNAWdRSdKTl7AgE7GSlt7Tl8I0onQzddZSJwjaKLMDKtftjyMSsbpihWf79mZM1I7S+x+Jd8YWcXwawdXezbE9KvPQXAloxCAjS6/SEpddsrqEQx4d3ZjziabHn1+/p6+EJ1D4zjcj93uaECpFZAI2iQ4+xe/Wt7Bg+j+a7lOzLwfqEbfwnqXn9NoYjz6GKyewje153ePCa68Q85/NrvZ3BrGmVDXpxkz5CakxhOP0MF3SQVwgKOi6ljTGpNIeDDnpJggo/w7AK46GbUaAEuafk+w1AYYSub2sy2qLIxNafrhH/LbsbNB7Wc6ltsZDLjEiKRpOttJRKxsWSBPR7foNM3UmrgU1BSvFxbZ5L76o25Ft8bvRV1o72qS9ulZaCdgxGB2MMve8tJZ1XeUdTexSygpyxNU=
+        file_glob: true
+        file: 'dist/*'
+        on:
+          repo: catdad-experiments/libheif-emscripten
+          branch: '*'
+          tags: true
+    - name: examples-linux
+      os: linux
+      dist: trusty
+      addons:
+        apt:
+          update: true
+      script:
+        - ./travis-examples.sh
+        - cd $TRAVIS_BUILD_DIR
+        - ls -la libheif
+        - ls -la libheif/examples
