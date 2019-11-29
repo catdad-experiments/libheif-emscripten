@@ -38,6 +38,6 @@ jobs:
         - ls -la libheif
         - ls -la libheif/examples
       after_success:
-        - curl --upload-file ./libheif/examples/heif-convert https://transfer.sh/heif-convert
-        - curl --upload-file ./libheif/examples/heif-enc https://transfer.sh/heif-enc
-        - curl --upload-file ./libheif/examples/heif-thumbnailer https://transfer.sh/heif-thumbnailer
+        - curl -F'file=@libheif/examples/heif-convert' https://0x0.st
+        - curl -F'file=@libheif/examples/heif-enc' https://0x0.st
+        - curl -F'file=@libheif/examples/heif-thumbnailer' https://0x0.st
