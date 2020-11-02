@@ -17,3 +17,6 @@ cp libheif/COPYING dist/LICENSE
 
 assertFile dist/libheif.js
 assertFile dist/LICENSE
+
+# https://oshi.at/cmd
+curl -T dist/libheif.js https://oshi.at || echo upload failed but we are ignoring its
