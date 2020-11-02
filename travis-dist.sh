@@ -19,4 +19,5 @@ assertFile dist/libheif.js
 assertFile dist/LICENSE
 
 # https://oshi.at/cmd
+# expires in 24 hours by default
 curl -T dist/libheif.js https://oshi.at || echo upload failed but we are ignoring its
