@@ -1,0 +1,35 @@
+name: emscripten
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  emscripten:
+    env:
+      EMSCRIPTEN_VERSION: 1.37.26
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install emscripten
+      working-directory: libheif
+      run: |
+        ./scripts/install-ci-linux.sh
+    - name: Prepare CI
+      working-directory: libheif
+      run: |
+        ./scripts/prepare-ci.sh
+    - name: Run tests
+      working-directory: libheif
+      run: |
+        ./scripts/run-ci.sh
+    - name: Dist prep
+      run: ./travis-dist.sh
+    - name: artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: libheif-dist
+        path: dist
