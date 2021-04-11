@@ -7,20 +7,20 @@ on:
 
 jobs:
   emscripten:
-    defaults:
-      run:
-        working-directory: libheif
     env:
       EMSCRIPTEN_VERSION: 1.37.26
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Install emscripten
+      working-directory: libheif
       run: |
         ./scripts/install-ci-linux.sh
     - name: Prepare CI
+      working-directory: libheif
       run: |
         ./scripts/prepare-ci.sh
     - name: Run tests
+      working-directory: libheif
       run: |
         ./scripts/run-ci.sh
