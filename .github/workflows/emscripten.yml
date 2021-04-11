@@ -26,3 +26,10 @@ jobs:
       working-directory: libheif
       run: |
         ./scripts/run-ci.sh
+    - name: Dist prep
+      run: ./travis-dist.sh
+    - name: artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: dist
