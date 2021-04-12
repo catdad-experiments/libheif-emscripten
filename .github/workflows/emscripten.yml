@@ -27,7 +27,7 @@ jobs:
       run: |
         ./scripts/run-ci.sh
     - name: Dist prep
-      run: ./travis-dist.sh
+      run: ./dist-prep.sh
     - name: Artifacts
       uses: actions/upload-artifact@v2
       with:
