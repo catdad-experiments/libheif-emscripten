@@ -28,8 +28,39 @@ jobs:
         ./scripts/run-ci.sh
     - name: Dist prep
       run: ./travis-dist.sh
-    - name: artifacts
+    - name: Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: libheif-dist
         path: dist
+    - name: Release
+      if: startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request'
+      uses: actions/github-script@v2
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const fs = require('fs').promises;
+          console.log('environment', process.versions);
+          
+          const { repo: { owner, repo }, sha, ref } = context;
+          console.log({ owner, repo, sha, ref });
+          
+          const name = ref.replace('refs/tags/', '');
+          const release = await github.repos.createRelease({
+            owner, repo, name,
+            tag_name: name,
+            draft: true,
+            target_commitish: sha
+          });
+
+          console.log('created release', { release });
+          
+          for (let file of await fs.readdir('./dist')) {
+            console.log('uploading', file);
+            await github.repos.uploadReleaseAsset({
+              owner, repo,
+              release_id: release.data.id,
+              name: file,
+              data: await fs.readFile(`./${file}`)
+            });
+          }
