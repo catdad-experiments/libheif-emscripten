@@ -19,3 +19,4 @@ assertFile dist/libheif.js
 assertFile dist/LICENSE
 
 chown $(whoami) dist/libheif.js dist/LICENSE
+ls -la dist
