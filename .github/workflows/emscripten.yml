@@ -31,7 +31,9 @@ jobs:
     - name: WASM experimental
       working-directory: libheif
       run: |
-        source ./emscripten/emsdk/emsdk_env.sh && USE_WASM=1 ./build-emscripten.sh .
+        sed s/USE_WASM=0/USR_WASM=1/g ./scripts/run-ci.sh > ./scripts/run-ci-wasm.sh
+        chmod +x ./scripts/run-ci-wasm.sh
+        ./scripts/run-ci-wasm.sh
         ls -la
     - name: Artifacts
       uses: actions/upload-artifact@v2
