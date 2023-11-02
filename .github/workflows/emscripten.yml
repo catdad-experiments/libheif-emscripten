@@ -53,14 +53,14 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         path: ./
-    - name: Flatten artifacts
+    - name: Arrange artifacts
       run: |
         mv js libheif
         mv wasm libheif-wasm
         touch libheif.tar.gz
         tar -czf libheif.tar.gz libheif libheif-wasm
         ls -lR
-    - name: Grouped Artifacts
+    - name: Publish grouped artifacts
       uses: actions/upload-artifact@v3
       with:
         name: libheif-dist
