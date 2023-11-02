@@ -57,6 +57,7 @@ jobs:
       run: |
         mv js libheif
         mv wasm libheif-wasm
+        touch libheif.tar.gz
         tar -czf libheif.tar.gz --exclude=libheif.tar.gz .
         ls -lR
     - name: Grouped Artifacts
