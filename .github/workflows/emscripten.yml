@@ -28,6 +28,11 @@ jobs:
         ./scripts/run-ci.sh
     - name: Dist prep
       run: ./dist-prep.sh
+    - name: WASM experimental
+      working-directory: libheif
+      run: |
+        source ./emscripten/emsdk/emsdk_env.sh && USE_WASM=1 ./build-emscripten.sh .
+        ls -la
     - name: Artifacts
       uses: actions/upload-artifact@v2
       with:
