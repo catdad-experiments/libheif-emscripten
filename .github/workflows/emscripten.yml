@@ -47,6 +47,7 @@ jobs:
         path: dist
   release:
     runs-on: ubuntu-20.04
+    needs: [emscripten]
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v3
