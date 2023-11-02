@@ -9,7 +9,7 @@ jobs:
   emscripten:
     strategy:
       matrix:
-        use_wasm: [0, 1]
+        target: [js, wasm]
     env:
       EMSCRIPTEN_VERSION: 3.1.47
     runs-on: ubuntu-20.04
@@ -25,13 +25,13 @@ jobs:
       working-directory: libheif
       run: |
         ./scripts/prepare-ci.sh
-    - name: Run build and tests
-      if: ${{ matrix.use_wasm=='0' }}
+    - name: Run build and tests (JS)
+      if: ${{ matrix.target=='js' }}
       working-directory: libheif
       run: |
         ./scripts/run-ci.sh
     - name: Run build and tests (WASM)
-      if: ${{ matrix.use_wasm=='1' }}
+      if: ${{ matrix.target=='wasm' }}
       working-directory: libheif
       run: |
         sed s/USE_WASM=0/USR_WASM=1/g ./scripts/run-ci.sh > ./scripts/run-ci-wasm.sh
@@ -43,8 +43,21 @@ jobs:
     - name: Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: libheif-dist
+        name: ${{ matrix.target }}
         path: dist
+  release:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: ./
+    - name: Flatten artifacts
+      run: |
+        ls -lR
+    - name: Grouped Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: all
+        path: '.'
     - name: Release
       if: startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request'
       uses: actions/github-script@v2
