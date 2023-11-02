@@ -12,6 +12,9 @@ function assertFile {
 
 mkdir -p dist
 rm -rf dist/*
+
+ls -la libheif
+
 cp libheif/libheif.js dist/libheif.js
 cp libheif/COPYING dist/LICENSE
 
