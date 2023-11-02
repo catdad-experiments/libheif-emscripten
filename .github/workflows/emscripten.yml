@@ -7,6 +7,9 @@ on:
 
 jobs:
   emscripten:
+    strategy:
+      matrix:
+        use_wasm: [0, 1]
     env:
       EMSCRIPTEN_VERSION: 3.1.47
     runs-on: ubuntu-20.04
@@ -22,19 +25,21 @@ jobs:
       working-directory: libheif
       run: |
         ./scripts/prepare-ci.sh
-    - name: Run tests
+    - name: Run build and tests
+      if: ${{ matrix.use_wasm=='0' }}
       working-directory: libheif
       run: |
         ./scripts/run-ci.sh
-    - name: Dist prep
-      run: ./dist-prep.sh
-    - name: WASM experimental
+    - name: Run build and tests (WASM)
+      if: ${{ matrix.use_wasm=='1' }}
       working-directory: libheif
       run: |
         sed s/USE_WASM=0/USR_WASM=1/g ./scripts/run-ci.sh > ./scripts/run-ci-wasm.sh
         chmod +x ./scripts/run-ci-wasm.sh
         ./scripts/run-ci-wasm.sh
         ls -la
+    - name: Dist prep
+      run: ./dist-prep.sh
     - name: Artifacts
       uses: actions/upload-artifact@v2
       with:
