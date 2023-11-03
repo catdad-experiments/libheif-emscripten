@@ -39,7 +39,7 @@ jobs:
         ./scripts/run-ci-wasm.sh
         ls -la
     - name: Dist prep
-      run: ./dist-prep.sh
+      run: ./dist-prep.sh ${{ matrix.target }}
     - name: Artifacts
       uses: actions/upload-artifact@v3
       with:
