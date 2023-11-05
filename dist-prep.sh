@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+build_target="$1"
+
 echoerr() { echo "$@" 1>&2; }
 
 function assertFile {
@@ -12,11 +14,36 @@ function assertFile {
 
 mkdir -p dist
 rm -rf dist/*
-cp libheif/libheif.js dist/libheif.js
-cp libheif/COPYING dist/LICENSE
 
-assertFile dist/libheif.js
-assertFile dist/LICENSE
+ls -la libheif
 
-chown $(whoami) dist/libheif.js dist/LICENSE
+function copyJs() {
+  cp libheif/libheif.js dist/libheif.js
+  cp libheif/COPYING dist/LICENSE
+
+  assertFile dist/libheif.js
+  assertFile dist/LICENSE
+
+  chown $(whoami) dist/libheif.js dist/LICENSE
+}
+
+function copyWasm() {
+  copyJs
+
+  cp libheif/libheif.wasm dist/libheif.wasm
+  assertFile dist/libheif.wasm
+  chown $(whoami) dist/libheif.wasm
+}
+
+if [ "$build_target" = "js" ]
+then
+  copyJs
+elif [ "$build_target" = "wasm" ]
+then
+  copyWasm
+else
+  echo "unknown build target: $build_target"
+  exit 1
+fi
+
 ls -la dist

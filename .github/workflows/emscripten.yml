@@ -7,11 +7,14 @@ on:
 
 jobs:
   emscripten:
+    strategy:
+      matrix:
+        target: [js, wasm]
     env:
-      EMSCRIPTEN_VERSION: 1.37.26
+      EMSCRIPTEN_VERSION: 3.1.47
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Install emscripten
@@ -22,17 +25,46 @@ jobs:
       working-directory: libheif
       run: |
         ./scripts/prepare-ci.sh
-    - name: Run tests
+    - name: Run build and tests (JS)
+      if: ${{ matrix.target=='js' }}
       working-directory: libheif
       run: |
         ./scripts/run-ci.sh
+    - name: Run build and tests (WASM)
+      if: ${{ matrix.target=='wasm' }}
+      working-directory: libheif
+      run: |
+        sed s/USE_WASM=0/USR_WASM=1/g ./scripts/run-ci.sh > ./scripts/run-ci-wasm.sh
+        chmod +x ./scripts/run-ci-wasm.sh
+        ./scripts/run-ci-wasm.sh
+        ls -la
     - name: Dist prep
-      run: ./dist-prep.sh
+      run: ./dist-prep.sh ${{ matrix.target }}
     - name: Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.target }}
+        path: dist
+  release:
+    runs-on: ubuntu-20.04
+    needs: [emscripten]
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: ./
+    - name: Arrange artifacts
+      run: |
+        mv js libheif
+        mv wasm libheif-wasm
+        touch libheif.tar.gz
+        tar -czf libheif.tar.gz libheif libheif-wasm
+        ls -lR
+    - name: Publish grouped artifacts
+      uses: actions/upload-artifact@v3
       with:
         name: libheif-dist
-        path: dist
+        path: '.'
     - name: Release
       if: startsWith(github.ref, 'refs/tags/') && github.event_name != 'pull_request'
       uses: actions/github-script@v2
@@ -40,6 +72,7 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           const fs = require('fs').promises;
+          const path = require('path');
           console.log('environment', process.versions);
           
           const { repo: { owner, repo }, sha, ref } = context;
@@ -55,12 +88,16 @@ jobs:
 
           console.log('created release', { release });
           
-          for (let file of await fs.readdir('./dist')) {
+          for (let file of [
+            './libheif.tar.gz',
+            './libheif/libheif.js',
+            './libheif/LICENSE'
+          ]) {
             console.log('uploading', file);
             await github.repos.uploadReleaseAsset({
               owner, repo,
               release_id: release.data.id,
-              name: file,
-              data: await fs.readFile(`./dist/${file}`)
+              name: path.basename(file),
+              data: await fs.readFile(file)
             });
           }
