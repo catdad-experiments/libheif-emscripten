@@ -19,9 +19,11 @@ ls -la libheif
 
 function copyJs() {
   cp libheif/libheif.js dist/libheif.js
+  cp libheif/libheif.d.ts dist/libheif.d.ts
   cp libheif/COPYING dist/LICENSE
 
   assertFile dist/libheif.js
+  assertFile dist/libheif.d.ts
   assertFile dist/LICENSE
 
   chown $(whoami) dist/libheif.js dist/LICENSE
