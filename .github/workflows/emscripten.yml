@@ -41,7 +41,7 @@ jobs:
     - name: Dist prep
       run: ./dist-prep.sh ${{ matrix.target }}
     - name: Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.target }}
         path: dist
@@ -50,7 +50,7 @@ jobs:
     needs: [emscripten]
     steps:
     - name: Download build artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: ./
     - name: Arrange artifacts
@@ -61,7 +61,7 @@ jobs:
         tar -czf libheif.tar.gz libheif libheif-wasm
         ls -lR
     - name: Publish grouped artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: libheif-dist
         path: '.'
