@@ -29,7 +29,7 @@ jobs:
       if: ${{ matrix.target=='js' }}
       working-directory: libheif
       run: |
-        sed s/USE_WASM=0/USE_WASM=0\ USE_UNSAFE_EVAL=0/g ./scripts/run-ci.sh > ./scripts/run-ci-js.sh
+        sed -e 's/USE_WASM=0/USE_WASM=0 USE_UNSAFE_EVAL=0/g' -e 's/USE_TYPESCRIPT=0/USE_TYPESCRIPT=1/g' ./scripts/run-ci.sh > ./scripts/run-ci-js.sh
         chmod +x ./scripts/run-ci-js.sh
         ./scripts/run-ci-js.sh
         ls -la
@@ -37,7 +37,7 @@ jobs:
       if: ${{ matrix.target=='wasm' }}
       working-directory: libheif
       run: |
-        sed s/USE_WASM=0/USE_WASM=1\ USE_UNSAFE_EVAL=0/g ./scripts/run-ci.sh > ./scripts/run-ci-wasm.sh
+        sed -e 's/USE_WASM=0/USE_WASM=1 USE_UNSAFE_EVAL=0/g' -e 's/USE_TYPESCRIPT=0/USE_TYPESCRIPT=1/g' ./scripts/run-ci.sh > ./scripts/run-ci-wasm.sh
         chmod +x ./scripts/run-ci-wasm.sh
         ./scripts/run-ci-wasm.sh
         ls -la
