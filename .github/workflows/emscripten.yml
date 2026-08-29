@@ -17,6 +17,12 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: recursive
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
+    - name: Install typescript
+      run: npm install -g typescript@5
     - name: Install emscripten
       working-directory: libheif
       run: |
